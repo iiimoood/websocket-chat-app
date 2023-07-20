@@ -1,6 +1,8 @@
 {
   ('use strict');
 
+  const socket = io();
+
   const loginForm = document.getElementById('welcome-form');
   const messagesSection = document.getElementById('messages-section');
   const messagesList = document.getElementById('messages-list');
@@ -9,6 +11,8 @@
   const messageContentInput = document.getElementById('message-content');
 
   let userName = '';
+
+  socket.on('message', ({ author, content }) => addMessage(author, content));
 
   const login = (e) => {
     e.preventDefault();
@@ -27,6 +31,10 @@
       alert('Message cannot be empty');
     } else {
       addMessage(userName, messageContentInput.value);
+      socket.emit('message', {
+        author: userName,
+        content: messageContentInput.value,
+      });
       messageContentInput.value = '';
     }
   };
