@@ -1,0 +1,16 @@
+{
+  "name": "websocket-chat-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Dominika Ejsmont <d.ejsmont95@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "scripts": {
+    "start": "nodemon server.js"
+  }
+}
