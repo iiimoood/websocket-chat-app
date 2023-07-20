@@ -13,6 +13,12 @@
   let userName = '';
 
   socket.on('message', ({ author, content }) => addMessage(author, content));
+  socket.on('newUser', (user) => {
+    addMessage('Chat Bot', `${user.name} has joined the conversation!`);
+  });
+  socket.on('removeUser', (user) => {
+    addMessage('Chat Bot', `${user.name} has left the conversation... :(`);
+  });
 
   const login = (e) => {
     e.preventDefault();
@@ -20,6 +26,7 @@
       alert('Username cannot be empty');
     } else {
       userName = userNameInput.value;
+      socket.emit('join', { user: userName });
       loginForm.classList.remove('show');
       messagesSection.classList.add('show');
     }

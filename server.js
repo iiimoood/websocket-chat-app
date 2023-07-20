@@ -11,6 +11,12 @@ const io = socket(server);
 
 io.on('connection', (socket) => {
   console.log('New client! Its id – ' + socket.id);
+  socket.on('join', (user) => {
+    const newUser = { name: user.user, id: socket.id };
+    db.users.push(newUser);
+    console.log(db.users);
+    socket.broadcast.emit('newUser', newUser);
+  });
   socket.on('message', (message) => {
     console.log("Oh, I've got something from " + socket.id);
     db.messages.push(message);
@@ -18,6 +24,14 @@ io.on('connection', (socket) => {
   });
   socket.on('disconnect', () => {
     console.log('Oh, socket ' + socket.id + ' has left');
+    const userIndex = db.users.findIndex((user) => {
+      user.id === socket.id;
+    });
+    if (userIndex !== -1) {
+      socket.broadcast.emit('removeUser', db.users[userIndex]);
+      db.users.splice(userIndex, 1);
+    }
+    console.log(db.users);
   });
 
   console.log("I've added a listener on message event \n");
