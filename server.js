@@ -24,9 +24,7 @@ io.on('connection', (socket) => {
   });
   socket.on('disconnect', () => {
     console.log('Oh, socket ' + socket.id + ' has left');
-    const userIndex = db.users.findIndex((user) => {
-      user.id === socket.id;
-    });
+    const userIndex = db.users.findIndex((user) => user.id === socket.id);
     if (userIndex !== -1) {
       socket.broadcast.emit('removeUser', db.users[userIndex]);
       db.users.splice(userIndex, 1);
